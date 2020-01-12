@@ -56,3 +56,68 @@ def CreateDataDictionary():
         dict[i] = {t[0] : t[1:] for t in dict[i]}      
 
     return dict 
+
+def Games():
+
+    dataset = pd.read_csv('Data/GameData/NCAAResults.csv')
+    Season = dataset['Season'].tolist()
+    WTeam = dataset['WTeamID'].tolist()
+    WScore = dataset['WScore'].tolist()
+    LTeam = dataset['LTeamID'].tolist()
+    LScore = dataset['LScore'].tolist()
+
+    GameStats = []
+    for entry in range(0, len(dataset), 1):
+        if Season[entry] > 1992:
+            GameStats += [ [Season[entry], WTeam[entry], WScore[entry], LTeam[entry], LScore[entry] ] ]   
+
+    teams = pd.read_csv('Data/GameData/Teams.csv')
+    
+    TeamID = teams['ID'].tolist()
+    Team = teams['Name'].tolist()
+
+    Teams = []
+    for entry in range(0, len(teams), 1):
+        Teams += [ [ TeamID[entry], Team[entry]] ]
+
+    '''
+    x = CreateDataDictionary()
+    for i in Teams:
+        try:
+            x[i[1]]
+        except:
+            print("Name Error: " + i[1])
+    '''
+
+    for game in GameStats:
+        for team in Teams:
+            if game[1] in team:
+                game[1] = team[1]
+            if game[3] in team:
+                game[3] = team[1]
+
+    return GameStats
+
+
+def CompareTeams(teamA, teamB, year):
+    data = CreateDataDictionary()
+    A = np.array(data[teamA][year])
+    B = np.array(data[teamB][year])
+    print(A-B)
+    return A - B
+
+x = CreateDataDictionary()
+
+y = Games()
+for i in y:
+    print(i)
+
+
+#CompareTeams('Yale', 'Kentucky', 2018)
+
+
+def GenerateTrainingSet()
+
+    
+    xTrain = np.zeros(games, features+1)
+    yTrain = np.zeros(games)
